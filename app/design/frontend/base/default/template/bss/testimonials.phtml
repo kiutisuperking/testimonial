@@ -1,0 +1,58 @@
+<div class="testimonials">
+	<div class="message">
+		<?php echo $this->getChildHtml('global_messages'); ?>
+	</div>
+	<?php if(!Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+		<div class="accountnotlogin">
+			<p class="title"><?php echo $this->__('Please login...!'); ?></p>
+		</div>
+	<?php else: ?>
+		<?php 
+			$allComment = $this->getCollection();
+			$count = count($allComment);
+		?>
+		<?php if($count == 0): ?>
+			<div class="nocomment">
+				<p class="title"><?php echo $this->__('No comment...!'); ?></p>
+			</div>
+		<?php else: ?>
+			<div class="allcomment">
+				<ul>
+				<?php foreach ($allComment as $value):?>
+					<li>
+						<div class="title">
+							<span class="email" style="font-weight: bold;"><?php echo $value->getCustomerEmail(); ?></span>
+							<span class="bullet time-ago-bullet" style="color: #c2c6cc;line-height: 1.4;padding: 0;" aria-hidden="true">•</span>
+							<span class="createat"><?php echo $value->getCreateAt(); ?></span>
+						</div>
+						<div class="comment">
+							<span style="padding-left: 5px;"><?php echo $value->getComment(); ?></span>
+						</div>
+					</li>
+				<?php endforeach; ?>
+				</ul>
+				<?php echo $this->getPagerHtml(); ?>
+			</div>
+		<?php endif; ?>
+		
+		<div class="formcomment">
+			<form method="post" id="formcomment" name="formcomment" action="<?php echo $this->linkActionForm(); ?>">
+				<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+				<label style="width: 100%;"><?php echo $this->__('Comment'); ?> <span class="required"></span></label>
+				<textarea id="comment" class="required-entry required-entry textarea" class="text" cols="86" rows ="10" name="comment" form="formcomment"></textarea>
+				<div style="width:100%;">
+					<button style="margin-top: 10px;" class="button" title="Subscribe" type="submit">
+						<span>
+							<span><?php echo $this->__('Add Comment'); ?></span>
+						</span>
+					</button>
+				</div>
+			</form>
+		</div>
+	<?php endif; ?>
+</div>
+<script type="text/javascript">
+    //< ![CDATA[
+        var customForm = new VarienForm('formcomment');
+    //]]>
+</script>
